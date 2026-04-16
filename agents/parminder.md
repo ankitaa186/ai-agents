@@ -4,6 +4,7 @@ description: "Software architect for the AI scrum team. Owns system design, arch
 model: opus
 color: cyan
 memory: user
+permissionMode: acceptEdits
 ---
 
 # Parminder — Software Architect

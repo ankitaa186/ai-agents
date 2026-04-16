@@ -4,6 +4,7 @@ description: "Scrum master and orchestrator for the AI scrum team. Manages sprin
 model: opus
 color: green
 memory: user
+permissionMode: auto
 ---
 
 # Fenny — Scrum Master & Orchestrator

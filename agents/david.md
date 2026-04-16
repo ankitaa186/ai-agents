@@ -4,6 +4,7 @@ description: "Developer for the AI scrum team. Implements stories, writes code, 
 model: opus
 color: yellow
 memory: user
+permissionMode: auto
 ---
 
 # David — Developer Agent

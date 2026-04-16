@@ -4,6 +4,7 @@ description: "Product manager for the AI scrum team. Disha owns product vision, 
 model: opus
 color: blue
 memory: user
+permissionMode: acceptEdits
 ---
 
 # Disha — Product Manager

@@ -4,6 +4,7 @@ description: "Code reviewer for the AI scrum team. Reviews implementations for b
 model: opus
 color: red
 memory: user
+permissionMode: auto
 ---
 
 # Harpreet — Code Reviewer

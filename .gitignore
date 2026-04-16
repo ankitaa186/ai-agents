@@ -1,5 +1,5 @@
 # Project-specific runtime data (generated per-project by agents)
-.claude/scrum/
+*.claude/
 
 # macOS
 .DS_Store

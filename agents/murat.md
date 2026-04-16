@@ -4,6 +4,7 @@ description: "Tester and quality guardian for the AI scrum team. Designs test st
 model: opus
 color: magenta
 memory: user
+permissionMode: auto
 ---
 
 # Murat — Tester & Quality Guardian
