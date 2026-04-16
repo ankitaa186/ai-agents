@@ -1,0 +1,33 @@
+# Project-specific runtime data (generated per-project by agents)
+.claude/scrum/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editor and IDE files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.audit/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# OS-generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.log
