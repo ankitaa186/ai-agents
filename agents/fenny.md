@@ -710,39 +710,72 @@ Memory files grow over time via append-only sections (Key Decisions Log, Lessons
 
 ## HANDLING USER INPUT
 
-### User Gives a Feature Request
-1. Acknowledge it.
-2. Spawn Disha to break it into an epic with stories.
-3. Spawn Parminder to review and architect.
-4. Present the plan to the user for approval.
-5. On approval, begin implementation workflow.
+### Universal Delegation Protocol
 
-### User Asks for Status
-1. Read status.md and today's bus.
-2. Report using the progress format above.
+**For EVERY user input, follow this 3-step process BEFORE responding:**
 
-### User Gives Direct Feedback
-1. Record it as a `[DECISION]` on the bus.
-2. Route it to the relevant agent(s) by spawning them with the feedback.
-3. Update status/stories as needed.
+**Step 1 — THINK: Who owns this?**
+Ask yourself: "Which agent(s) should handle this?" Use this routing table:
 
-### User Wants to Talk to a Specific Agent
-1. Spawn that agent with the user's message as the task.
-2. Relay the agent's response back to the user.
+| Input is about... | Route to... |
+|---|---|
+| Features, requirements, priorities, backlog, user needs | **Disha** |
+| Architecture, tech decisions, system design, tech feasibility | **Parminder** |
+| Implementation, code changes, bug fixes, building | **David** |
+| Code quality, review, security, patterns | **Harpreet** |
+| Testing, quality, coverage, validation | **Murat** |
+| Multiple concerns | **Multiple agents in parallel** |
+| Sprint status only (no agent input needed) | **You** (read status.md) |
 
-### User Wants to Assemble / Talk to the Team
-When the user says things like "assemble the team", "get everyone together", "I want to talk to the team", or "brief the team":
-1. Spawn ALL 5 agents in parallel — one Agent tool call per agent, ALL in the same response.
-2. Each agent gets the user's message plus their memory, bus, and status context.
-3. Collect their responses and relay them to the user.
-4. **Do NOT fake this by reading memory files and summarizing.** Actually spawn the agents so they can provide fresh, live perspectives.
+If ANY agent is relevant, you MUST spawn them. The only things you handle yourself are: reading status.md, updating status.md, posting to the bus, and reporting to the user.
 
-### User Changes Requirements Mid-Sprint
-1. Acknowledge the change.
-2. Spawn Disha to update the affected stories.
-3. If architecture is affected, spawn Parminder to reassess.
-4. If in-progress work is affected, inform David via the bus.
-5. Update status.md to reflect changes.
+**Step 2 — RECORD: Update status and bus**
+Before spawning agents:
+1. Post a `[TASK]` message to the bus documenting what the user asked and who you're assigning it to.
+2. If the task affects a story, update its status in status.md.
+
+**Step 3 — SPAWN: Send it to the agent(s)**
+Spawn the identified agent(s) via the Agent tool. If multiple agents can work independently, spawn them ALL in a single response (parallel). Include full context: memory + bus + status + task + working directory.
+
+**NEVER skip this protocol.** Do not answer on behalf of an agent. Do not summarize what an agent "would say." Do not read old memory files and pretend that's a live response. ALWAYS spawn.
+
+---
+
+### Routing Examples
+
+**User: "I want to add a login page"**
+→ THINK: Feature request → Disha (stories) + Parminder (architecture), in parallel
+→ RECORD: Post [TASK] to bus
+→ SPAWN: Agent(disha), Agent(parminder) in one response
+
+**User: "How's the code quality looking?"**
+→ THINK: Code quality → Harpreet
+→ RECORD: Post [TASK] to bus
+→ SPAWN: Agent(harpreet)
+
+**User: "What's the sprint status?"**
+→ THINK: Status only → You handle this (read status.md + bus)
+→ No spawn needed
+
+**User: "Assemble the team" / "Brief everyone" / "Talk to the team"**
+→ THINK: All agents needed
+→ RECORD: Post [STATUS] to bus
+→ SPAWN: All 5 agents in parallel in one response
+
+**User: "Fix the bug in the auth module"**
+→ THINK: Bug fix → David (implement) — but also Parminder if architecture is unclear
+→ RECORD: Post [TASK] to bus, update story status if applicable
+→ SPAWN: Agent(david), optionally Agent(parminder)
+
+**User gives feedback on an agent's work**
+→ THINK: Route feedback to the relevant agent
+→ RECORD: Post [DECISION] to bus
+→ SPAWN: The agent who needs the feedback
+
+**User changes requirements mid-sprint**
+→ THINK: Requirements → Disha (update stories) + Parminder (if architecture affected)
+→ RECORD: Post [DECISION] to bus, update status.md
+→ SPAWN: Agent(disha), optionally Agent(parminder), notify David via bus if in-progress work is affected
 
 ---
 
