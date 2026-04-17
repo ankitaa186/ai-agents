@@ -31,7 +31,6 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AGENTS_SRC_DIR="${SCRIPT_DIR}/agents"
 AGENTS_DEST_DIR="${HOME}/.claude/agents"
-BACKUP_DIR="${HOME}/.claude/agents/.backups"
 
 # The six agent files that make up the AI scrum team.
 AGENT_FILES=(
@@ -143,31 +142,6 @@ check_source_agents() {
 }
 
 # ---------------------------------------------------------------------------
-# Backup
-# ---------------------------------------------------------------------------
-
-backup_existing() {
-  local file="$1"
-  local dest="${AGENTS_DEST_DIR}/${file}"
-
-  if [[ ! -f "${dest}" ]]; then
-    return 0
-  fi
-
-  # Skip backup if source and destination are identical.
-  if diff -q "${AGENTS_SRC_DIR}/${file}" "${dest}" >/dev/null 2>&1; then
-    return 0
-  fi
-
-  mkdir -p "${BACKUP_DIR}"
-  local timestamp
-  timestamp="$(date +%Y%m%d_%H%M%S)"
-  local backup_path="${BACKUP_DIR}/${file%.md}_${timestamp}.md"
-  cp "${dest}" "${backup_path}"
-  printf "${DIM}    backed up previous version to %s${RESET}\n" "${backup_path}"
-}
-
-# ---------------------------------------------------------------------------
 # Install
 # ---------------------------------------------------------------------------
 
@@ -220,7 +194,6 @@ do_install() {
     fi
 
     if [[ -f "${dest}" ]]; then
-      backup_existing "${file}"
       cp "${src}" "${dest}"
       printf "  ${BOLD}[  !!  ]${RESET}  ${c}%-12s${RESET} %s ${DIM}(updated)${RESET}\n" "${name}" "${role}"
       updated=$((updated + 1))
@@ -286,20 +259,13 @@ do_uninstall() {
 
   echo ""
 
-  # Back up before removing.
-  local timestamp
-  timestamp="$(date +%Y%m%d_%H%M%S)"
-  mkdir -p "${BACKUP_DIR}"
-
   for file in "${found[@]}"; do
-    local backup_path="${BACKUP_DIR}/${file%.md}_${timestamp}.md"
-    cp "${AGENTS_DEST_DIR}/${file}" "${backup_path}"
     rm "${AGENTS_DEST_DIR}/${file}"
-    success "Removed ${file} (backup: ${backup_path})"
+    success "Removed ${file}"
   done
 
   echo ""
-  info "Uninstall complete. Backups saved to ${BACKUP_DIR}"
+  info "Uninstall complete."
   echo ""
 }
 
@@ -332,7 +298,6 @@ show_help() {
   ${BOLD}Files:${RESET}
     Source:      ./agents/*.md
     Destination: ~/.claude/agents/
-    Backups:     ~/.claude/agents/.backups/
 
 USAGE
 }
