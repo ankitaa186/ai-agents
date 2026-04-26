@@ -72,7 +72,7 @@ Since agent files are loaded by Claude Code at runtime, the testing process is m
 
 2. **Open a test project.** Use a scratch project directory -- do not test against a production codebase.
 
-3. **Invoke the agent.** In Claude Code, run the agent using its slash command (e.g., `/fenny`) and exercise the workflows you changed.
+3. **Invoke the agent.** In Claude Code, address the agent by name (e.g., type `fenny, ...` in the chat) or pick it from the `/agents` menu, and exercise the workflows you changed. Agents are routed automatically based on their `description` and `<example>` blocks.
 
 4. **Verify behavior.** Confirm that:
    - The agent responds according to its defined role.

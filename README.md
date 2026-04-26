@@ -132,7 +132,7 @@ Key design decisions:
 ## Installation
 
 ```bash
-git clone https://github.com/ankit-ag-in/ai-agents.git
+git clone https://github.com/ankitaa186/ai-agents.git
 cd ai-agents
 ./install.sh
 ```
