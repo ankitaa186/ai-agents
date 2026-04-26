@@ -29,7 +29,7 @@ through a file-based message bus at `.claude/scrum/bus/` under the target projec
 
 ## Key Conventions
 
-- Agent files use Claude Code agent frontmatter (`name`, `description`, `model`, `color`, `memory`).
+- Agent files use Claude Code agent frontmatter (`name`, `description`, `model`, `color`). Each agent's per-project memory is a runtime file at `.claude/scrum/memory/.{name}.md` that the agent reads itself — it is not declared in frontmatter.
 - Agents are **project-agnostic** — they discover everything from the codebase they run in.
   Never hardcode project-specific paths, languages, or conventions.
 - Agents are **self-contained** — each file must work standalone without referencing
