@@ -107,13 +107,13 @@ she left off.
     All agents read/write:
     ===================================================
     |              Message Bus                        |
-    |  .scrum/bus/YYYY-MM-DD.md                |
+    |  .scrum/bus/YYYY-MM-DD.md                       |
     ===================================================
     |              Status File                        |
-    |  .scrum/status.md                        |
+    |  .scrum/status.md                               |
     ===================================================
     |              Per-Agent Memory                   |
-    |  .scrum/memory/.{agent}.md               |
+    |  .scrum/memory/.{agent}.md                      |
     ===================================================
 ```
 
