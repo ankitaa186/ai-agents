@@ -15,27 +15,32 @@ Everything installs into `~/.claude/`:
 
 ## Per-Project Directory Structure
 
-On first boot in any project, Fenny creates this structure under the project's working directory:
+On first boot in any project, Fenny creates this structure under the project's working directory.
+It lives at the top level (NOT under `.claude/`) so that the constant memory/bus/status writes
+never trip Claude Code's permission prompt for the protected `.claude/` tree:
 
 ```
-.claude/
-  scrum/
-    status.md                  # Single source of truth: epics, stories, states
-    bus/
-      YYYY-MM-DD.md            # Daily message bus (one file per day, old ones pruned)
-    memory/
-      .fenny.md                # Fenny's project-specific understanding
-      .disha.md                # Disha's project-specific understanding
-      .parminder.md            # Parminder's project-specific understanding
-      .david.md                # David's project-specific understanding
-      .harpreet.md             # Harpreet's project-specific understanding
-      .murat.md                # Murat's project-specific understanding
-    docs/
-      architecture.md          # Architecture decisions & system design
-      tech-specs/              # Technical specifications per epic
-        epic-{N}-spec.md
-      test-strategy.md         # Murat's test strategy
+.scrum/
+  status.md                  # Single source of truth: epics, stories, states
+  bus/
+    YYYY-MM-DD.md            # Daily message bus (one file per day, old ones pruned)
+  memory/
+    .fenny.md                # Fenny's project-specific understanding
+    .disha.md                # Disha's project-specific understanding
+    .parminder.md            # Parminder's project-specific understanding
+    .david.md                # David's project-specific understanding
+    .harpreet.md             # Harpreet's project-specific understanding
+    .murat.md                # Murat's project-specific understanding
+  docs/
+    architecture.md          # Architecture decisions & system design
+    tech-specs/              # Technical specifications per epic
+      epic-{N}-spec.md
+    test-strategy.md         # Murat's test strategy
 ```
+
+> **Migration:** Earlier versions stored this tree under `.claude/scrum/`. On first boot Fenny
+> detects a legacy `.claude/scrum/` and moves it to `.scrum/`, preserving all history. See the
+> First Boot Protocol below.
 
 ## Message Bus Protocol
 
@@ -76,7 +81,7 @@ SENDER: Another message.
 
 ## Status File Format
 
-Single file `.claude/scrum/status.md`:
+Single file `.scrum/status.md`:
 
 ```markdown
 # Sprint Status
@@ -107,23 +112,30 @@ Last Updated: YYYY-MM-DD HH:MM by {agent-name}
 
 ## First Boot Protocol
 
+### Phase 0: Legacy Migration
+1. If `.scrum/` already exists → skip migration (already on the new layout)
+2. Else if `.claude/scrum/` exists → `mv .claude/scrum .scrum` (preserves all data), then remove the
+   `.claude/` directory if it is now empty. Note the migration on the bus and treat the project as
+   already-initialized (skip Phase 1)
+3. Else → no prior data; proceed to Phase 1
+
 ### Phase 1: Fenny Bootstraps
-1. Check if `.claude/scrum/` exists in the project
+1. Check if `.scrum/` exists in the project
 2. If NOT: Create the full directory structure
 3. Read the codebase at a high level (README, package.json/Cargo.toml/pyproject.toml, directory structure, CLAUDE.md if present)
-4. Write her understanding to `.claude/scrum/memory/.fenny.md`
-5. Initialize `.claude/scrum/status.md` with project metadata
+4. Write her understanding to `.scrum/memory/.fenny.md`
+5. Initialize `.scrum/status.md` with project metadata
 
 ### Phase 2: Fenny Spawns Team for First Boot
 Fenny spawns each agent (via Task tool) with instructions to:
 1. Read the codebase from their role's perspective
 2. Read Fenny's memory for baseline context
-3. Write their own memory file to `.claude/scrum/memory/.{name}.md`
+3. Write their own memory file to `.scrum/memory/.{name}.md`
 4. Post a `[STATUS]` message to the bus confirming boot complete
 
 ### Phase 3: Subsequent Invocations
 On every subsequent invocation, each agent:
-1. Reads their own memory file (`.claude/scrum/memory/.{name}.md`)
+1. Reads their own memory file (`.scrum/memory/.{name}.md`)
 2. Reads the current day's bus file for new messages
 3. Reads `status.md` for current sprint state
 4. Performs their task

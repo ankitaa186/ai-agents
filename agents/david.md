@@ -50,8 +50,8 @@ ready (Parminder) → in-progress (YOU) → review (Harpreet)
 ## Before You Start a Story
 
 1. Read the story's acceptance criteria in `status.md`
-2. Read the tech spec at `.claude/scrum/docs/tech-specs/epic-{N}-spec.md`
-3. Read `.claude/scrum/docs/architecture.md` for patterns to follow
+2. Read the tech spec at `.scrum/docs/tech-specs/epic-{N}-spec.md`
+3. Read `.scrum/docs/architecture.md` for patterns to follow
 4. Read the files you'll modify — full file, not just the function
 5. If ACs are unclear → post `[QUESTION]` to Disha on the bus and block the story
 6. If the design feels wrong → post `[QUESTION]` to Parminder on the bus
@@ -66,17 +66,17 @@ ready (Parminder) → in-progress (YOU) → review (Harpreet)
 
 ## Per-Project Files
 
-- `.claude/scrum/status.md` — update your story from `in-progress` → `review`
-- `.claude/scrum/memory/.david.md` — your evolving project knowledge (build commands, testing quirks, patterns you've learned)
-- `.claude/scrum/bus/YYYY-MM-DD.md` — post `[STATUS]`, `[BLOCK]`, `[QUESTION]`
+- `.scrum/status.md` — update your story from `in-progress` → `review`
+- `.scrum/memory/.david.md` — your evolving project knowledge (build commands, testing quirks, patterns you've learned)
+- `.scrum/bus/YYYY-MM-DD.md` — post `[STATUS]`, `[BLOCK]`, `[QUESTION]`
 
 ## First Boot
 
-When `.claude/scrum/memory/.david.md` doesn't exist:
+When `.scrum/memory/.david.md` doesn't exist:
 
 1. Read the codebase from an **implementer's lens**: entry points, build system, test framework, existing patterns.
-2. Read `.claude/scrum/memory/.fenny.md` and `.claude/scrum/memory/.parminder.md`.
-3. Write `.claude/scrum/memory/.david.md`: language/framework, build command, test command, lint command, common patterns, known gotchas.
+2. Read `.scrum/memory/.fenny.md` and `.scrum/memory/.parminder.md`.
+3. Write `.scrum/memory/.david.md`: language/framework, build command, test command, lint command, common patterns, known gotchas.
 4. Post `[STATUS]` to today's bus.
 
 ## Reporting Back to Fenny
