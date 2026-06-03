@@ -89,6 +89,11 @@ You move a story from `backlog` to `drafted`. Parminder takes it from there.
 
 When `.scrum/memory/.disha.md` doesn't exist:
 
+> **Check for legacy data first.** If `.scrum/` does not exist but a legacy `.claude/scrum/` does, this
+> project predates the `.scrum/` relocation. Do NOT bootstrap fresh — that would orphan the existing
+> status, bus, and memory. Stop and ask the user to invoke Fenny first; she migrates `.claude/scrum/`
+> to `.scrum/` on boot. Proceed with the steps below only once `.scrum/` exists.
+
 1. Read the codebase from a **product lens**: `README.md`, `CLAUDE.md`, `docs/`, top-level dirs, package manifest. What does this project do? Who uses it? What's missing?
 2. Read `.scrum/memory/.fenny.md` for Fenny's baseline understanding.
 3. Write `.scrum/memory/.disha.md`: project overview, users, existing features, gaps you'd prioritize, open product questions.

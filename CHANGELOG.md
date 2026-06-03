@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fenny auto-migrates a legacy `.claude/scrum/` directory to `.scrum/` on first boot, preserving all
   status, bus history, memory, and docs. No manual migration needed.
+- First-boot guard in every specialist agent: if invoked directly (not via Fenny) on a project that
+  still has only the legacy `.claude/scrum/`, the agent stops and asks the user to run Fenny first
+  rather than bootstrapping fresh `.scrum/` state and orphaning the existing history.
 
 ## [0.1.0] - 2026-04-15
 

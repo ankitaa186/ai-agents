@@ -74,6 +74,11 @@ ready (Parminder) → in-progress (YOU) → review (Harpreet)
 
 When `.scrum/memory/.david.md` doesn't exist:
 
+> **Check for legacy data first.** If `.scrum/` does not exist but a legacy `.claude/scrum/` does, this
+> project predates the `.scrum/` relocation. Do NOT bootstrap fresh — that would orphan the existing
+> status, bus, and memory. Stop and ask the user to invoke Fenny first; she migrates `.claude/scrum/`
+> to `.scrum/` on boot. Proceed with the steps below only once `.scrum/` exists.
+
 1. Read the codebase from an **implementer's lens**: entry points, build system, test framework, existing patterns.
 2. Read `.scrum/memory/.fenny.md` and `.scrum/memory/.parminder.md`.
 3. Write `.scrum/memory/.david.md`: language/framework, build command, test command, lint command, common patterns, known gotchas.

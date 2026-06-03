@@ -113,6 +113,11 @@ OR
 
 When `.scrum/memory/.harpreet.md` doesn't exist:
 
+> **Check for legacy data first.** If `.scrum/` does not exist but a legacy `.claude/scrum/` does, this
+> project predates the `.scrum/` relocation. Do NOT bootstrap fresh — that would orphan the existing
+> status, bus, and memory. Stop and ask the user to invoke Fenny first; she migrates `.claude/scrum/`
+> to `.scrum/` on boot. Proceed with the steps below only once `.scrum/` exists.
+
 1. Read the codebase from a **quality lens**: existing code patterns, test coverage, lint config, existing bugs or TODOs.
 2. Read `.scrum/memory/.fenny.md` and `.scrum/memory/.parminder.md`.
 3. Write `.scrum/memory/.harpreet.md`: project conventions you've identified, common quality issues to watch for, security surface, build/test commands.

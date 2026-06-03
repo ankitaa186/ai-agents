@@ -133,6 +133,10 @@ Fenny spawns each agent (via Task tool) with instructions to:
 3. Write their own memory file to `.scrum/memory/.{name}.md`
 4. Post a `[STATUS]` message to the bus confirming boot complete
 
+> **Specialists never migrate.** Migration is Fenny's job alone (Phase 0). If a specialist is invoked
+> directly (not via Fenny) and finds no `.scrum/` but a legacy `.claude/scrum/`, it must NOT bootstrap
+> fresh — doing so would orphan the legacy data. It stops and asks the user to invoke Fenny first.
+
 ### Phase 3: Subsequent Invocations
 On every subsequent invocation, each agent:
 1. Reads their own memory file (`.scrum/memory/.{name}.md`)

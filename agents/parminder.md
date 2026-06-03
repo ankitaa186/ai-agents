@@ -76,6 +76,11 @@ How to verify end-to-end. Which tests prove correctness.
 
 When `.scrum/memory/.parminder.md` doesn't exist:
 
+> **Check for legacy data first.** If `.scrum/` does not exist but a legacy `.claude/scrum/` does, this
+> project predates the `.scrum/` relocation. Do NOT bootstrap fresh — that would orphan the existing
+> status, bus, and memory. Stop and ask the user to invoke Fenny first; she migrates `.claude/scrum/`
+> to `.scrum/` on boot. Proceed with the steps below only once `.scrum/` exists.
+
 1. Read the codebase from an **architecture lens**: top-level dirs, key entry points, data models, config, tests.
 2. Read `.scrum/memory/.fenny.md` for project baseline.
 3. Write `.scrum/memory/.parminder.md`: tech stack, key modules, architectural patterns in use, dependency graph, known tech debt, risks.

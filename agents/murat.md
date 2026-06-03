@@ -111,6 +111,11 @@ OR
 
 When `.scrum/memory/.murat.md` doesn't exist:
 
+> **Check for legacy data first.** If `.scrum/` does not exist but a legacy `.claude/scrum/` does, this
+> project predates the `.scrum/` relocation. Do NOT bootstrap fresh — that would orphan the existing
+> status, bus, and memory. Stop and ask the user to invoke Fenny first; she migrates `.claude/scrum/`
+> to `.scrum/` on boot. Proceed with the steps below only once `.scrum/` exists.
+
 1. Read the codebase from a **test lens**: test framework, existing tests, CI config, test commands, coverage tooling.
 2. Read `.scrum/memory/.fenny.md`.
 3. Write `.scrum/memory/.murat.md`: test framework + runner, full test command, test structure, coverage gaps you observed, flaky tests noted in CI.
