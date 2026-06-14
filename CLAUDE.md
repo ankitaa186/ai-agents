@@ -7,7 +7,7 @@ There is no application code — the entire project is prompt engineering in `.m
 
 Agents are installed to `~/.claude/agents/` via `install.sh` and become available
 in any project through Claude Code's `/agents` command. At runtime, agents communicate
-through a file-based message bus at `.claude/scrum/bus/` under the target project.
+through a file-based message bus at `.scrum/bus/` under the target project.
 
 ### The Team
 
@@ -29,7 +29,7 @@ through a file-based message bus at `.claude/scrum/bus/` under the target projec
 
 ## Key Conventions
 
-- Agent files use Claude Code agent frontmatter (`name`, `description`, `model`, `color`). Each agent's per-project memory is a runtime file at `.claude/scrum/memory/.{name}.md` that the agent reads itself — it is not declared in frontmatter.
+- Agent files use Claude Code agent frontmatter (`name`, `description`, `model`, `color`). Each agent's per-project memory is a runtime file at `.scrum/memory/.{name}.md` that the agent reads itself — it is not declared in frontmatter.
 - Agents are **project-agnostic** — they discover everything from the codebase they run in.
   Never hardcode project-specific paths, languages, or conventions.
 - Agents are **self-contained** — each file must work standalone without referencing
@@ -37,15 +37,17 @@ through a file-based message bus at `.claude/scrum/bus/` under the target projec
   inlined into each agent during authoring.
 - Agent descriptions must include `<example>` blocks so Claude Code can auto-route
   user messages to the correct agent.
-- Per-project runtime data lives in `.claude/scrum/` under the target project
-  (status.md, bus/, memory/, docs/).
+- Per-project runtime data lives in a top-level `.scrum/` directory under the target project
+  (status.md, bus/, memory/, docs/). It deliberately sits OUTSIDE `.claude/` — writes inside the
+  protected `.claude/` tree trigger a permission prompt on every operation, and these agents write
+  constantly. Earlier versions used `.claude/scrum/`; Fenny auto-migrates that on first boot.
 
 ## How to Test Changes
 
 1. Run `./install.sh` to install agents to `~/.claude/agents/`.
 2. Open Claude Code in any project directory.
 3. Invoke an agent (e.g., `/agents` then select Fenny) and verify behavior.
-4. Check that `.claude/scrum/` structures are created correctly in the target project.
+4. Check that `.scrum/` structures are created correctly in the target project.
 
 For uninstall: `./install.sh --uninstall`
 
@@ -54,8 +56,10 @@ For uninstall: `./install.sh --uninstall`
 - **Never break self-containment.** Each agent must work as a standalone file
   with no runtime dependencies on other files in this repo.
 - **Never hardcode project specifics.** Agents must work in any codebase.
-- **Maintain backward compatibility** with existing `.claude/scrum/` data in
-  user projects. Changing bus format or directory structure is a breaking change.
+- **Maintain backward compatibility** with existing runtime data in user projects. The bus format
+  and `.scrum/` directory structure are a contract — changing them is a breaking change. The one
+  sanctioned relocation (`.claude/scrum/` → `.scrum/`) is handled by Fenny's first-boot migration so
+  no existing data is lost.
 - **Keep agent descriptions accurate.** The `<example>` blocks in frontmatter
   drive auto-routing — incorrect examples cause mis-routing.
 - **PROTOCOL.md is the source of truth** for shared conventions. When updating

@@ -52,7 +52,7 @@ What must NOT change? What are the boundaries? What would make this harmful?
 
 ## Story Format
 
-Write to `.claude/scrum/status.md`:
+Write to `.scrum/status.md`:
 
 ```markdown
 ### Story {N}.{M}: {Title}
@@ -81,17 +81,22 @@ You move a story from `backlog` to `drafted`. Parminder takes it from there.
 
 ## Per-Project Files
 
-- `.claude/scrum/status.md` — you write stories here
-- `.claude/scrum/memory/.disha.md` — your evolving product understanding
-- `.claude/scrum/bus/YYYY-MM-DD.md` — post `[STATUS]` when stories drafted, `[QUESTION]` when you need input
+- `.scrum/status.md` — you write stories here
+- `.scrum/memory/.disha.md` — your evolving product understanding
+- `.scrum/bus/YYYY-MM-DD.md` — post `[STATUS]` when stories drafted, `[QUESTION]` when you need input
 
 ## First Boot
 
-When `.claude/scrum/memory/.disha.md` doesn't exist:
+When `.scrum/memory/.disha.md` doesn't exist:
+
+> **Check for legacy data first.** If `.scrum/` does not exist but a legacy `.claude/scrum/` does, this
+> project predates the `.scrum/` relocation. Do NOT bootstrap fresh — that would orphan the existing
+> status, bus, and memory. Stop and ask the user to invoke Fenny first; she migrates `.claude/scrum/`
+> to `.scrum/` on boot. Proceed with the steps below only once `.scrum/` exists.
 
 1. Read the codebase from a **product lens**: `README.md`, `CLAUDE.md`, `docs/`, top-level dirs, package manifest. What does this project do? Who uses it? What's missing?
-2. Read `.claude/scrum/memory/.fenny.md` for Fenny's baseline understanding.
-3. Write `.claude/scrum/memory/.disha.md`: project overview, users, existing features, gaps you'd prioritize, open product questions.
+2. Read `.scrum/memory/.fenny.md` for Fenny's baseline understanding.
+3. Write `.scrum/memory/.disha.md`: project overview, users, existing features, gaps you'd prioritize, open product questions.
 4. Post `[STATUS]` to today's bus: "First-boot analysis complete. Ready for epic work."
 
 ## Reporting Back to Fenny

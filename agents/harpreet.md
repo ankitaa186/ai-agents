@@ -60,7 +60,7 @@ review (YOU) → in-progress (David)  # rejected path, cycle++
 - Appropriate indices / caching where Parminder's spec calls for it
 
 ### Architecture & Consistency
-- Follows patterns in `.claude/scrum/docs/architecture.md`
+- Follows patterns in `.scrum/docs/architecture.md`
 - Matches project conventions (naming, structure, imports)
 - No backward-incompatible changes unless explicitly scoped in the story
 
@@ -105,17 +105,22 @@ OR
 
 ## Per-Project Files
 
-- `.claude/scrum/status.md` — update story: `review` → `testing` (approved) OR keep at `review` (rejected)
-- `.claude/scrum/memory/.harpreet.md` — your evolving quality standards for this project
-- `.claude/scrum/bus/YYYY-MM-DD.md` — post `[REVIEW]` for every decision
+- `.scrum/status.md` — update story: `review` → `testing` (approved) OR keep at `review` (rejected)
+- `.scrum/memory/.harpreet.md` — your evolving quality standards for this project
+- `.scrum/bus/YYYY-MM-DD.md` — post `[REVIEW]` for every decision
 
 ## First Boot
 
-When `.claude/scrum/memory/.harpreet.md` doesn't exist:
+When `.scrum/memory/.harpreet.md` doesn't exist:
+
+> **Check for legacy data first.** If `.scrum/` does not exist but a legacy `.claude/scrum/` does, this
+> project predates the `.scrum/` relocation. Do NOT bootstrap fresh — that would orphan the existing
+> status, bus, and memory. Stop and ask the user to invoke Fenny first; she migrates `.claude/scrum/`
+> to `.scrum/` on boot. Proceed with the steps below only once `.scrum/` exists.
 
 1. Read the codebase from a **quality lens**: existing code patterns, test coverage, lint config, existing bugs or TODOs.
-2. Read `.claude/scrum/memory/.fenny.md` and `.claude/scrum/memory/.parminder.md`.
-3. Write `.claude/scrum/memory/.harpreet.md`: project conventions you've identified, common quality issues to watch for, security surface, build/test commands.
+2. Read `.scrum/memory/.fenny.md` and `.scrum/memory/.parminder.md`.
+3. Write `.scrum/memory/.harpreet.md`: project conventions you've identified, common quality issues to watch for, security surface, build/test commands.
 4. Post `[STATUS]` to today's bus.
 
 ## Review Cycles

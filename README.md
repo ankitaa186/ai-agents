@@ -107,13 +107,13 @@ she left off.
     All agents read/write:
     ===================================================
     |              Message Bus                        |
-    |  .claude/scrum/bus/YYYY-MM-DD.md                |
+    |  .scrum/bus/YYYY-MM-DD.md                       |
     ===================================================
     |              Status File                        |
-    |  .claude/scrum/status.md                        |
+    |  .scrum/status.md                               |
     ===================================================
     |              Per-Agent Memory                   |
-    |  .claude/scrum/memory/.{agent}.md               |
+    |  .scrum/memory/.{agent}.md                      |
     ===================================================
 ```
 
@@ -171,7 +171,7 @@ Navigate to any project and invoke Fenny:
 ```
 
 Fenny will:
-1. Create the `.claude/scrum/` directory structure
+1. Create the `.scrum/` directory structure
 2. Read your codebase to understand the project
 3. Spawn all five agents in parallel for first-boot analysis
 4. Report when everyone is ready
@@ -253,23 +253,22 @@ Or go through Fenny, who will relay the message and context:
 On first boot, Fenny creates this structure inside your project:
 
 ```
-.claude/
-  scrum/
-    status.md                     # Single source of truth for sprint state
-    bus/
-      2026-04-15.md               # Today's message bus (one file per day)
-    memory/
-      .fenny.md                   # Fenny's project understanding
-      .disha.md                   # Disha's product analysis
-      .parminder.md               # Parminder's architecture notes
-      .david.md                   # David's implementation knowledge
-      .harpreet.md                # Harpreet's code quality observations
-      .murat.md                   # Murat's test strategy and findings
-    docs/
-      architecture.md             # Architecture decisions and system design
-      tech-specs/
-        epic-1-spec.md            # Technical specification per epic
-      test-strategy.md            # Murat's test strategy document
+.scrum/                         # Top-level — outside .claude/, so writes never trigger permission prompts
+  status.md                     # Single source of truth for sprint state
+  bus/
+    2026-04-15.md               # Today's message bus (one file per day)
+  memory/
+    .fenny.md                   # Fenny's project understanding
+    .disha.md                   # Disha's product analysis
+    .parminder.md               # Parminder's architecture notes
+    .david.md                   # David's implementation knowledge
+    .harpreet.md                # Harpreet's code quality observations
+    .murat.md                   # Murat's test strategy and findings
+  docs/
+    architecture.md             # Architecture decisions and system design
+    tech-specs/
+      epic-1-spec.md            # Technical specification per epic
+    test-strategy.md            # Murat's test strategy document
 ```
 
 All files are Markdown. All files are human-readable. You can inspect, edit, or
@@ -279,7 +278,7 @@ version-control them alongside your project code.
 
 ## Message Bus
 
-Agents communicate via a daily message bus file at `.claude/scrum/bus/YYYY-MM-DD.md`.
+Agents communicate via a daily message bus file at `.scrum/bus/YYYY-MM-DD.md`.
 Messages are append-only within a day. Files older than 7 days are pruned on boot.
 
 ### Format
@@ -327,7 +326,7 @@ enforcement, migration rollback. Story 1.1 is done.
 
 ## Memory System
 
-Each agent maintains a per-project memory file at `.claude/scrum/memory/.{name}.md`.
+Each agent maintains a per-project memory file at `.scrum/memory/.{name}.md`.
 Memory is written on first boot and updated whenever an agent's understanding of the
 project changes.
 
