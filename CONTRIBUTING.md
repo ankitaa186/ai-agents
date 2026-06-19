@@ -67,12 +67,12 @@ Since agent files are loaded by Claude Code at runtime, the testing process is m
 1. **Install locally.** Copy the modified agent file(s) to `~/.claude/agents/`:
 
    ```bash
-   cp agents/fenny.md ~/.claude/agents/fenny.md
+   cp agents/john.md ~/.claude/agents/john.md
    ```
 
 2. **Open a test project.** Use a scratch project directory -- do not test against a production codebase.
 
-3. **Invoke the agent.** In Claude Code, address the agent by name (e.g., type `fenny, ...` in the chat) or pick it from the `/agents` menu, and exercise the workflows you changed. Agents are routed automatically based on their `description` and `<example>` blocks.
+3. **Invoke the agent.** In Claude Code, address the agent by name (e.g., type `john, ...` in the chat) or pick it from the `/agents` menu, and exercise the workflows you changed. Agents are routed automatically based on their `description` and `<example>` blocks.
 
 4. **Verify behavior.** Confirm that:
    - The agent responds according to its defined role.

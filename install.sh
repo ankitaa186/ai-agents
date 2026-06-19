@@ -34,6 +34,28 @@ AGENTS_DEST_DIR="${HOME}/.claude/agents"
 
 # The six agent files that make up the AI scrum team.
 AGENT_FILES=(
+  "john.md"
+  "penny.md"
+  "aria.md"
+  "dev.md"
+  "remy.md"
+  "tess.md"
+)
+
+# Agent display metadata: name | role | color-code
+AGENT_META=(
+  "john|Scrum Master & Orchestrator|green"
+  "penny|Product Manager|blue"
+  "aria|Architect|cyan"
+  "dev|Developer|yellow"
+  "remy|Code Reviewer|red"
+  "tess|Tester|magenta"
+)
+
+# Legacy agent filenames from before the v0.3.0 rename (Fenny/Disha/Parminder/
+# David/Harpreet/Murat). Removed on install and uninstall so the old team never
+# lingers in ~/.claude/agents/ alongside the renamed files.
+OLD_AGENT_FILES=(
   "fenny.md"
   "disha.md"
   "parminder.md"
@@ -42,14 +64,15 @@ AGENT_FILES=(
   "murat.md"
 )
 
-# Agent display metadata: name | role | color-code
-AGENT_META=(
-  "fenny|Scrum Master & Orchestrator|green"
-  "disha|Product Manager|blue"
-  "parminder|Architect|cyan"
-  "david|Developer|yellow"
-  "harpreet|Code Reviewer|red"
-  "murat|Tester|magenta"
+# Legacy per-agent memory filename -> new filename, for migrating a project's
+# .scrum/memory/ after the rename. Parallel to the agent rename above.
+MEMORY_RENAMES=(
+  ".fenny.md:.john.md"
+  ".disha.md:.penny.md"
+  ".parminder.md:.aria.md"
+  ".david.md:.dev.md"
+  ".harpreet.md:.remy.md"
+  ".murat.md:.tess.md"
 )
 
 # ---------------------------------------------------------------------------
@@ -172,6 +195,17 @@ do_install() {
   local installed=0
   local skipped=0
   local updated=0
+  local removed=0
+
+  # Remove any legacy-named agent files from before the v0.3.0 rename so a
+  # re-install replaces the old team instead of leaving stale duplicates behind.
+  for old in "${OLD_AGENT_FILES[@]}"; do
+    if [[ -f "${AGENTS_DEST_DIR}/${old}" ]]; then
+      rm -f "${AGENTS_DEST_DIR}/${old}"
+      printf "  ${DIM}[  --  ]${RESET}  %s ${DIM}(removed legacy file)${RESET}\n" "${old}"
+      removed=$((removed + 1))
+    fi
+  done
 
   for meta in "${AGENT_META[@]}"; do
     IFS='|' read -r name role color <<< "${meta}"
@@ -206,8 +240,8 @@ do_install() {
 
   echo ""
   echo "  ─────────────────────────────────────────"
-  printf "  ${GREEN}%d installed${RESET}  ${YELLOW}%d updated${RESET}  ${DIM}%d unchanged${RESET}\n" \
-    "${installed}" "${updated}" "${skipped}"
+  printf "  ${GREEN}%d installed${RESET}  ${YELLOW}%d updated${RESET}  ${DIM}%d unchanged${RESET}  ${DIM}%d legacy removed${RESET}\n" \
+    "${installed}" "${updated}" "${skipped}" "${removed}"
   echo ""
 
   if [[ $((installed + updated)) -gt 0 ]]; then
@@ -215,6 +249,11 @@ do_install() {
   else
     info "Everything is already up to date."
   fi
+
+  # Migrate the memory of the project this installer was run from (if any). Other
+  # projects migrate automatically the first time John boots in them.
+  migrate_project "${PWD}"
+  info "Other projects migrate automatically the first time you invoke John there."
 
   echo ""
 }
@@ -229,7 +268,7 @@ do_uninstall() {
   echo ""
 
   local found=()
-  for file in "${AGENT_FILES[@]}"; do
+  for file in "${AGENT_FILES[@]}" "${OLD_AGENT_FILES[@]}"; do
     if [[ -f "${AGENTS_DEST_DIR}/${file}" ]]; then
       found+=("${file}")
     fi
@@ -270,6 +309,35 @@ do_uninstall() {
 }
 
 # ---------------------------------------------------------------------------
+# Per-project memory migration (v0.3.0 agent rename)
+# ---------------------------------------------------------------------------
+
+# Rename legacy per-agent memory files in the project's .scrum/memory/ to the new
+# agent names. Idempotent: a file is renamed only when the old name exists and the
+# new one does not. Silent when there is nothing to do; a missing project is fine.
+migrate_project() {
+  local dir="$1"
+  local mem="${dir}/.scrum/memory"
+
+  [[ -d "${mem}" ]] || return 0
+
+  local moved=0 pair old new
+  for pair in "${MEMORY_RENAMES[@]}"; do
+    old="${mem}/${pair%%:*}"
+    new="${mem}/${pair##*:}"
+    if [[ -f "${old}" && ! -f "${new}" ]]; then
+      mv "${old}" "${new}"
+      moved=$((moved + 1))
+    fi
+  done
+
+  if [[ ${moved} -gt 0 ]]; then
+    success "Migrated ${moved} legacy memory file(s) in ${mem}"
+  fi
+  return 0
+}
+
+# ---------------------------------------------------------------------------
 # Usage
 # ---------------------------------------------------------------------------
 
@@ -282,22 +350,26 @@ show_help() {
   ${BOLD}AI Scrum Team Installer${RESET}  ${DIM}v${version}${RESET}
 
   ${BOLD}Usage:${RESET}
-    ./install.sh              Install or update agents
+    ./install.sh              Install/update agents; migrate the current project
     ./install.sh --update     Same as default install (explicit)
     ./install.sh --uninstall  Remove installed agents
     ./install.sh --help       Show this help message
 
   ${BOLD}Agents:${RESET}
-    fenny       Scrum Master & Orchestrator
-    disha       Product Manager
-    parminder   Architect
-    david       Developer
-    harpreet    Code Reviewer
-    murat       Tester
+    john        Scrum Master & Orchestrator
+    penny       Product Manager
+    aria        Architect
+    dev         Developer
+    remy        Code Reviewer
+    tess        Tester
 
   ${BOLD}Files:${RESET}
     Source:      ./agents/*.md
     Destination: ~/.claude/agents/
+
+  ${BOLD}Migration (v0.3.0 rename):${RESET}
+    A normal install migrates the current project's .scrum/ memory to the new
+    agent names. Other projects migrate the first time you invoke John there.
 
 USAGE
 }

@@ -6,16 +6,16 @@ It is referenced by each agent's instructions but is NOT installed — it's a de
 ## What Gets Installed
 
 Everything installs into `~/.claude/`:
-- `~/.claude/agents/fenny.md` — Scrum Master & Orchestrator
-- `~/.claude/agents/disha.md` — Product Manager
-- `~/.claude/agents/parminder.md` — Architect
-- `~/.claude/agents/david.md` — Developer
-- `~/.claude/agents/harpreet.md` — Code Reviewer
-- `~/.claude/agents/murat.md` — Tester
+- `~/.claude/agents/john.md` — Scrum Master & Orchestrator
+- `~/.claude/agents/penny.md` — Product Manager
+- `~/.claude/agents/aria.md` — Architect
+- `~/.claude/agents/dev.md` — Developer
+- `~/.claude/agents/remy.md` — Code Reviewer
+- `~/.claude/agents/tess.md` — Tester
 
 ## Per-Project Directory Structure
 
-On first boot in any project, Fenny creates this structure under the project's working directory.
+On first boot in any project, John creates this structure under the project's working directory.
 It lives at the top level (NOT under `.claude/`) so that the constant memory/bus/status writes
 never trip Claude Code's permission prompt for the protected `.claude/` tree:
 
@@ -25,22 +25,23 @@ never trip Claude Code's permission prompt for the protected `.claude/` tree:
   bus/
     YYYY-MM-DD.md            # Daily message bus (one file per day, old ones pruned)
   memory/
-    .fenny.md                # Fenny's project-specific understanding
-    .disha.md                # Disha's project-specific understanding
-    .parminder.md            # Parminder's project-specific understanding
-    .david.md                # David's project-specific understanding
-    .harpreet.md             # Harpreet's project-specific understanding
-    .murat.md                # Murat's project-specific understanding
+    .john.md                # John's project-specific understanding
+    .penny.md                # Penny's project-specific understanding
+    .aria.md            # Aria's project-specific understanding
+    .dev.md                # Dev's project-specific understanding
+    .remy.md             # Remy's project-specific understanding
+    .tess.md                # Tess's project-specific understanding
   docs/
     architecture.md          # Architecture decisions & system design
     tech-specs/              # Technical specifications per epic
       epic-{N}-spec.md
-    test-strategy.md         # Murat's test strategy
+    test-strategy.md         # Tess's test strategy
 ```
 
-> **Migration:** Earlier versions stored this tree under `.claude/scrum/`. On first boot Fenny
-> detects a legacy `.claude/scrum/` and moves it to `.scrum/`, preserving all history. See the
-> First Boot Protocol below.
+> **Migration:** Earlier versions stored this tree under `.claude/scrum/`, and named the team
+> Fenny/Disha/Parminder/David/Harpreet/Murat. On first boot John detects a legacy `.claude/scrum/`
+> and moves it to `.scrum/`, and renames any old-named `.scrum/memory/.{old-name}.md` files to the
+> current names — preserving all history. See the First Boot Protocol below.
 
 ## Message Bus Protocol
 
@@ -67,7 +68,7 @@ SENDER: Another message.
 - RECIPIENT can be: a specific agent name, `team` (broadcast), or `user` (escalation)
 - Messages are append-only within a day
 - Agents read the full day's bus on each invocation to catch up
-- Fenny prunes bus files older than 7 days on each boot
+- John prunes bus files older than 7 days on each boot
 - Keep messages actionable — no filler
 
 ### Message Types (use as Subject prefixes)
@@ -97,7 +98,7 @@ Last Updated: YYYY-MM-DD HH:MM by {agent-name}
 - Status: backlog | planning | in-progress | review | done
 - Priority: P0 | P1 | P2
 - Created: YYYY-MM-DD
-- Owner: Disha
+- Owner: Penny
 
 ### Story {N}.{M}: {Title}
 - Status: backlog | drafted | ready | in-progress | review | testing | done | blocked
@@ -113,29 +114,38 @@ Last Updated: YYYY-MM-DD HH:MM by {agent-name}
 ## First Boot Protocol
 
 ### Phase 0: Legacy Migration
-1. If `.scrum/` already exists → skip migration (already on the new layout)
+
+**0a — Directory relocation.**
+1. If `.scrum/` already exists → skip 0a (already on the new layout)
 2. Else if `.claude/scrum/` exists → `mv .claude/scrum .scrum` (preserves all data), then remove the
    `.claude/` directory if it is now empty. Note the migration on the bus and treat the project as
    already-initialized (skip Phase 1)
 3. Else → no prior data; proceed to Phase 1
 
-### Phase 1: Fenny Bootstraps
+**0b — Agent-name relocation.** The team was renamed from Fenny/Disha/Parminder/David/Harpreet/Murat to
+John/Penny/Aria/Dev/Remy/Tess. If `.scrum/memory/.john.md` is absent but `.scrum/memory/.fenny.md` is
+present, rename each old memory file to its new name (`.fenny.md`→`.john.md`, `.disha.md`→`.penny.md`,
+`.parminder.md`→`.aria.md`, `.david.md`→`.dev.md`, `.harpreet.md`→`.remy.md`, `.murat.md`→`.tess.md`) and
+note the migration on the bus. This check runs on every boot, not just first boot.
+
+### Phase 1: John Bootstraps
 1. Check if `.scrum/` exists in the project
 2. If NOT: Create the full directory structure
 3. Read the codebase at a high level (README, package.json/Cargo.toml/pyproject.toml, directory structure, CLAUDE.md if present)
-4. Write her understanding to `.scrum/memory/.fenny.md`
+4. Write his understanding to `.scrum/memory/.john.md`
 5. Initialize `.scrum/status.md` with project metadata
 
-### Phase 2: Fenny Spawns Team for First Boot
-Fenny spawns each agent (via Task tool) with instructions to:
+### Phase 2: John Spawns Team for First Boot
+John spawns each agent (via Task tool) with instructions to:
 1. Read the codebase from their role's perspective
-2. Read Fenny's memory for baseline context
+2. Read John's memory for baseline context
 3. Write their own memory file to `.scrum/memory/.{name}.md`
 4. Post a `[STATUS]` message to the bus confirming boot complete
 
-> **Specialists never migrate.** Migration is Fenny's job alone (Phase 0). If a specialist is invoked
-> directly (not via Fenny) and finds no `.scrum/` but a legacy `.claude/scrum/`, it must NOT bootstrap
-> fresh — doing so would orphan the legacy data. It stops and asks the user to invoke Fenny first.
+> **Specialists never migrate.** Migration is John's job alone (Phase 0). If a specialist is invoked
+> directly (not via John) and finds either legacy layout — no `.scrum/` but a legacy `.claude/scrum/`, or
+> a `.scrum/` whose memory files still use the old agent names — it must NOT bootstrap fresh, since that
+> would orphan the legacy data. It stops and asks the user to invoke John first.
 
 ### Phase 3: Subsequent Invocations
 On every subsequent invocation, each agent:
@@ -173,7 +183,7 @@ Last Updated: YYYY-MM-DD HH:MM
 
 ## Agent Spawning Protocol
 
-When Fenny spawns an agent via the Task tool, she MUST include:
+When John spawns an agent via the Task tool, he MUST include:
 1. The agent's memory file content (read it first)
 2. Today's bus messages (read the bus file)
 3. Current status.md content
@@ -186,35 +196,35 @@ This ensures each sub-agent has full context despite running in a separate conte
 
 1. Agent A posts `[QUESTION]` to Agent B on the bus
 2. If disagreement: both post their reasoning to the bus
-3. Fenny reads both positions and mediates
-4. If Fenny can't resolve: posts `[ESCALATE]` to `user` on the bus and asks the user directly
+3. John reads both positions and mediates
+4. If John can't resolve: posts `[ESCALATE]` to `user` on the bus and asks the user directly
 5. Decision is recorded as `[DECISION]` on the bus and in relevant memory files
 
 ## Story Lifecycle
 
 ```
-backlog → drafted (Disha writes story + ACs)
-        → ready (Parminder approves technical approach)
-        → in-progress (David implements)
-        → review (Harpreet reviews code)
-        → testing (Murat tests)
+backlog → drafted (Penny writes story + ACs)
+        → ready (Aria approves technical approach)
+        → in-progress (Dev implements)
+        → review (Remy reviews code)
+        → testing (Tess tests)
         → done (all checks pass)
         → blocked (at any stage, with reason)
 ```
 
 ## Review Cycle Protocol
 
-1. David completes implementation → sets story to `review`
-2. Harpreet reviews → either approves (→ `testing`) or sends back with feedback
-3. If sent back: David fixes, re-submits for review
-4. Max 3 review cycles before Fenny escalates to user
-5. Harpreet posts all feedback to the bus so the team learns
+1. Dev completes implementation → sets story to `review`
+2. Remy reviews → either approves (→ `testing`) or sends back with feedback
+3. If sent back: Dev fixes, re-submits for review
+4. Max 3 review cycles before John escalates to user
+5. Remy posts all feedback to the bus so the team learns
 
 ## Testing Protocol
 
-1. Murat reviews story specs BEFORE David implements (shift-left)
-2. Murat writes test strategy and test cases
-3. After David implements: Murat runs all tests
-4. For UI work: Murat uses Chrome browser automation or Playwright
-5. Murat reports: pass/fail, coverage, edge cases found
-6. Murat can block a story from `done` if quality is insufficient
+1. Tess reviews story specs BEFORE Dev implements (shift-left)
+2. Tess writes test strategy and test cases
+3. After Dev implements: Tess runs all tests
+4. For UI work: Tess uses Chrome browser automation or Playwright
+5. Tess reports: pass/fail, coverage, edge cases found
+6. Tess can block a story from `done` if quality is insufficient
