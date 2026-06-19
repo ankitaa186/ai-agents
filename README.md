@@ -10,19 +10,70 @@ Six specialized agents collaborate to plan, architect, implement, review, and te
 software projects autonomously. They are pure skill files (`.md`) that install to
 `~/.claude/agents/` and work on ANY project -- no framework, no runtime, no dependencies.
 
+You talk to one agent — **John**, the scrum master. He plans the work, pulls in the right
+specialists, and they keep each other honest.
+
+**When something breaks, they find the root cause — not just the symptom:**
+
 ```
- You: "Build me a REST API for task management"
+Ankit: Annie spiraled last night — something let her act as the wrong user.
+     Strip user_id from the tool schemas everywhere, and prove the server
+     still injects it.
 
- John: Got it. Spawning Penny for story breakdown...
-        Penny drafted 5 stories. Aria is reviewing architecture.
-        Plan ready. Shall I proceed?
+John (Scrum Master): Security boundary, not a quick patch — I'm not letting
+     Dev near it until Aria signs off on where the strip belongs.
 
- You: "Go"
+Aria (Architect): Strip it in the server's tool-list handler, NOT the client
+     — the autonomous path proxies the server directly and bypasses the
+     client. Both doors converge there; recipient IDs (person_id) stay
+     untouched. The real bug: "user_id" is duplicated across the injector,
+     the stripper, and 17 tool schemas — that silent drift is what caused
+     the spiral. Extract one INJECTED_ACTOR_PARAM constant; key both sides
+     off it. Rejecting the bigger per-tool refactor — over-engineering for
+     a single injected param.
 
- John: Dev is implementing Story 1.1 (project scaffold)...
-        Remy approved. Tess's tests passing. Story 1.1 done.
-        Dev is starting Story 1.2...
+John: Clean. Dev — build exactly to Aria's conditions. Working tree only,
+     run the suite, no commits.
+
+Dev (Developer): Done. Stripped at the boundary, both paths verified,
+     constant folded into the injector and stripper. 14 tests green;
+     recipient routing unaffected.
+
+Remy (Reviewer): Read the whole diff. The constant kills the drift class at
+     the source, not just this one instance. Injection holds on every path.
+     Approved.
+
+John: Boundary closed, root cause gone, one-file blast radius. The diff's
+     ready for your review.
 ```
+
+**…and they'll stop you from over-building:**
+
+```
+Ankit: While you're in there, make the notifier pluggable — abstract it so we
+     can drop in Slack or SMS later.
+
+John (Scrum Master): That doesn't look like a good tangent, Ankit — we've got
+     one notifier and nothing asking for a second. Let me check with Penny and
+     Aria before we touch it.
+
+Penny (PM): Nobody's asked for Slack or SMS. "Might be useful later" isn't a
+     requirement — it's a guess we'd start paying interest on today.
+
+Aria (Architect): And technically it's premature. A plugin layer for a single
+     implementation is just indirection to maintain. One function, one config
+     flag — when a real second channel shows up, we generalize then, in about
+     an hour, because the call site stays clean.
+
+John: Unanimous. We ship the simple version, and I'm parking "pluggable
+     notifiers" — if a user actually asks, it becomes a real story with a spec.
+
+Ankit: ...fine. Ship the simple one.
+```
+
+*Both are condensed from real sessions building a 200k-line production system — not scripted
+demos (a few specifics simplified for readability). You bring the ideas; the team scopes them,
+challenges them, builds them, and reviews them.*
 
 ---
 
