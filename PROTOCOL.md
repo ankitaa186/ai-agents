@@ -9,7 +9,7 @@ Everything installs into `~/.claude/`:
 - `~/.claude/agents/john.md` — Scrum Master & Orchestrator
 - `~/.claude/agents/penny.md` — Product Manager
 - `~/.claude/agents/aria.md` — Architect
-- `~/.claude/agents/dev.md` — Developer
+- `~/.claude/agents/dave.md` — Developer
 - `~/.claude/agents/remy.md` — Code Reviewer
 - `~/.claude/agents/tess.md` — Tester
 
@@ -28,7 +28,7 @@ never trip Claude Code's permission prompt for the protected `.claude/` tree:
     .john.md                # John's project-specific understanding
     .penny.md                # Penny's project-specific understanding
     .aria.md            # Aria's project-specific understanding
-    .dev.md                # Dev's project-specific understanding
+    .dave.md                # Dave's project-specific understanding
     .remy.md             # Remy's project-specific understanding
     .tess.md                # Tess's project-specific understanding
   docs/
@@ -122,11 +122,12 @@ Last Updated: YYYY-MM-DD HH:MM by {agent-name}
    already-initialized (skip Phase 1)
 3. Else → no prior data; proceed to Phase 1
 
-**0b — Agent-name relocation.** The team was renamed from Fenny/Disha/Parminder/David/Harpreet/Murat to
-John/Penny/Aria/Dev/Remy/Tess. If `.scrum/memory/.john.md` is absent but `.scrum/memory/.fenny.md` is
-present, rename each old memory file to its new name (`.fenny.md`→`.john.md`, `.disha.md`→`.penny.md`,
-`.parminder.md`→`.aria.md`, `.david.md`→`.dev.md`, `.harpreet.md`→`.remy.md`, `.murat.md`→`.tess.md`) and
-note the migration on the bus. This check runs on every boot, not just first boot.
+**0b — Agent-name relocation.** The team was renamed in two waves — the original
+Fenny/Disha/Parminder/David/Harpreet/Murat to neutral names, then the Developer from Dev to Dave — and is
+now John/Penny/Aria/Dave/Remy/Tess. For each rename, move the old memory file to the new name when the old
+exists and the new does not (`.fenny.md`→`.john.md`, `.disha.md`→`.penny.md`, `.parminder.md`→`.aria.md`,
+`.david.md`→`.dave.md`, `.dev.md`→`.dave.md`, `.harpreet.md`→`.remy.md`, `.murat.md`→`.tess.md`) and note
+the migration on the bus. Idempotent; runs on every boot, not just first boot.
 
 ### Phase 1: John Bootstraps
 1. Check if `.scrum/` exists in the project
@@ -205,7 +206,7 @@ This ensures each sub-agent has full context despite running in a separate conte
 ```
 backlog → drafted (Penny writes story + ACs)
         → ready (Aria approves technical approach)
-        → in-progress (Dev implements)
+        → in-progress (Dave implements)
         → review (Remy reviews code)
         → testing (Tess tests)
         → done (all checks pass)
@@ -214,17 +215,17 @@ backlog → drafted (Penny writes story + ACs)
 
 ## Review Cycle Protocol
 
-1. Dev completes implementation → sets story to `review`
+1. Dave completes implementation → sets story to `review`
 2. Remy reviews → either approves (→ `testing`) or sends back with feedback
-3. If sent back: Dev fixes, re-submits for review
+3. If sent back: Dave fixes, re-submits for review
 4. Max 3 review cycles before John escalates to user
 5. Remy posts all feedback to the bus so the team learns
 
 ## Testing Protocol
 
-1. Tess reviews story specs BEFORE Dev implements (shift-left)
+1. Tess reviews story specs BEFORE Dave implements (shift-left)
 2. Tess writes test strategy and test cases
-3. After Dev implements: Tess runs all tests
+3. After Dave implements: Tess runs all tests
 4. For UI work: Tess uses Chrome browser automation or Playwright
 5. Tess reports: pass/fail, coverage, edge cases found
 6. Tess can block a story from `done` if quality is insufficient

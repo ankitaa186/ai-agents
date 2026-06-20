@@ -21,7 +21,7 @@ Ankit: Annie spiraled last night — something let her act as the wrong user.
      still injects it.
 
 John (Scrum Master): Security boundary, not a quick patch — I'm not letting
-     Dev near it until Aria signs off on where the strip belongs.
+     Dave near it until Aria signs off on where the strip belongs.
 
 Aria (Architect): Strip it in the server's tool-list handler, NOT the client
      — the autonomous path proxies the server directly and bypasses the
@@ -32,10 +32,10 @@ Aria (Architect): Strip it in the server's tool-list handler, NOT the client
      off it. Rejecting the bigger per-tool refactor — over-engineering for
      a single injected param.
 
-John: Clean. Dev — build exactly to Aria's conditions. Working tree only,
+John: Clean. Dave — build exactly to Aria's conditions. Working tree only,
      run the suite, no commits.
 
-Dev (Developer): Done. Stripped at the boundary, both paths verified,
+Dave (Developer): Done. Stripped at the boundary, both paths verified,
      constant folded into the injector and stripper. 14 tests green;
      recipient routing unaffected.
 
@@ -101,7 +101,7 @@ challenges them, builds them, and reviews them.*
 | **John** | Scrum Master & Orchestrator | `green` | Warm but efficient. Never writes code. Spawns and coordinates all agents. |
 | **Penny** | Product Manager | `blue` | User-focused. Breaks goals into epics and stories with precise acceptance criteria. |
 | **Aria** | Architect | `cyan` | Deep technical thinker. Owns system design, tech specs, and feasibility review. |
-| **Dev** | Developer | `yellow` | Methodical implementer. Follows conventions, writes clean production code. |
+| **Dave** | Developer | `yellow` | Methodical implementer. Follows conventions, writes clean production code. |
 | **Remy** | Code Reviewer | `red` | Quality gatekeeper. Thorough but fair. Will block bad code without hesitation. |
 | **Tess** | Tester | `magenta` | Quality obsessive. Writes all test types. Performs live UI testing when needed. |
 
@@ -115,8 +115,8 @@ sub-agents via Claude Code's Task tool, passing each one full project context.
 1. **You describe what you want.** Talk to John naturally -- a feature, a fix, an entire project.
 2. **John spawns Penny** to write the epic and break it into stories with acceptance criteria.
 3. **Aria reviews** each story for technical feasibility, writes a tech spec, and marks stories as "ready."
-4. **Dev implements** ready stories, one at a time or in parallel when they touch different files.
-5. **Remy reviews** Dev's code -- approves or rejects with specific, actionable feedback.
+4. **Dave implements** ready stories, one at a time or in parallel when they touch different files.
+5. **Remy reviews** Dave's code -- approves or rejects with specific, actionable feedback.
 6. **Tess tests** approved stories against the acceptance criteria and edge cases.
 7. **John tracks it all**, updates status, mediates conflicts, and reports progress to you.
 
@@ -151,7 +151,7 @@ he left off.
     +----------+  +---------+ | +-----------+ +----------+
                               v
                         +----------+
-                        |   Dev    |
+                        |   Dave   |
                         |  (Dev)   |
                         +----------+
 
@@ -195,7 +195,7 @@ This copies the agent skill files to your Claude Code agents directory:
   john.md         # Scrum Master & Orchestrator
   penny.md        # Product Manager
   aria.md         # Architect
-  dev.md          # Developer
+  dave.md          # Developer
   remy.md         # Code Reviewer
   tess.md         # Tester
 ```
@@ -231,7 +231,7 @@ John will:
 Scrum team initialized for my-web-app.
   Penny (PM): Ready -- identified 3 existing features and 5 product gaps
   Aria (Architect): Ready -- mapped architecture and tech debt
-  Dev (Developer): Ready -- cataloged code patterns and build system
+  Dave (Developer): Ready -- cataloged code patterns and build system
   Remy (Reviewer): Ready -- assessed code quality and standards
   Tess (Tester): Ready -- evaluated test coverage and frameworks
 
@@ -254,7 +254,7 @@ technical feasibility. You get a plan to approve before any code is written.
 > john, start implementing the approved stories
 ```
 
-John identifies dependency waves and begins spawning Dev for independent stories
+John identifies dependency waves and begins spawning Dave for independent stories
 in parallel. As each story completes, Remy reviews and Tess tests.
 
 ### Checking Status
@@ -269,14 +269,14 @@ Sprint Progress:
 Epic 1: User Authentication [in-progress]
   Story 1.1: Set up auth database schema       [done]
   Story 1.2: Implement registration endpoint    [review -> Remy]  (cycle 1/3)
-  Story 1.3: Implement login endpoint           [in-progress -> Dev]
+  Story 1.3: Implement login endpoint           [in-progress -> Dave]
   Story 1.4: Add password reset flow            [ready]
   Story 1.5: Add session management             [ready, depends on 1.2]
 
 Next actions:
 - Waiting for Remy's review of 1.2
-- Dev is implementing 1.3
-- 1.4 can begin once Dev is free
+- Dave is implementing 1.3
+- 1.4 can begin once Dave is free
 
 Blockers: None
 ```
@@ -312,7 +312,7 @@ On first boot, John creates this structure inside your project:
     .john.md                    # John's project understanding
     .penny.md                   # Penny's product analysis
     .aria.md                    # Aria's architecture notes
-    .dev.md                     # Dev's implementation knowledge
+    .dave.md                    # Dave's implementation knowledge
     .remy.md                    # Remy's code quality observations
     .tess.md                    # Tess's test strategy and findings
   docs/
@@ -338,17 +338,17 @@ Messages are append-only within a day. Files older than 7 days are pruned on boo
 # Scrum Bus -- 2026-04-15
 
 ## [14:32] John -> team: [STATUS] Sprint started
-John: Beginning implementation of Epic 1. Dev is picking up Story 1.1.
+John: Beginning implementation of Epic 1. Dave is picking up Story 1.1.
 
 ---
 
-## [14:35] Dev -> team: [STATUS] Story 1.1 complete
-Dev: Implemented auth database schema. Files changed: src/db/schema.sql,
+## [14:35] Dave -> team: [STATUS] Story 1.1 complete
+Dave: Implemented auth database schema. Files changed: src/db/schema.sql,
 src/models/user.ts. All existing tests passing. Ready for review.
 
 ---
 
-## [14:38] Remy -> Dev: [REVIEW] Story 1.1 approved
+## [14:38] Remy -> Dave: [REVIEW] Story 1.1 approved
 Remy: Schema looks clean. Good use of foreign keys and indexes. One
 suggestion: consider adding a created_at default. Moving to testing.
 
@@ -388,7 +388,7 @@ project changes.
 | **John** | Project metadata, team coordination notes, key decisions, build/test commands |
 | **Penny** | User personas, product gaps, feature inventory, prioritization rationale |
 | **Aria** | Architecture patterns, tech debt, dependency graph, scalability concerns |
-| **Dev** | Code patterns, build system, development workflow, file conventions |
+| **Dave** | Code patterns, build system, development workflow, file conventions |
 | **Remy** | Code quality standards, security posture, review patterns, common issues |
 | **Tess** | Test infrastructure, coverage gaps, test frameworks, testing patterns |
 
@@ -402,7 +402,7 @@ project changes.
    of the project changed.
 
 This means agents build institutional knowledge over time. Remy learns your
-codebase's patterns. Tess knows your test framework quirks. Dev remembers which
+codebase's patterns. Tess knows your test framework quirks. Dave remembers which
 conventions to follow.
 
 ---
@@ -418,10 +418,10 @@ Every story follows a strict lifecycle with clear ownership at each stage:
   drafted  --------->  Aria reviews feasibility
      |
      v
-  ready    --------->  Dev picks up implementation
+  ready    --------->  Dave picks up implementation
      |
      v
-  in-progress ------->  Dev writes code
+  in-progress ------->  Dave writes code
      |
      v
   review   --------->  Remy reviews code quality
@@ -485,12 +485,12 @@ Areas where help is most needed:
 See [CHANGELOG.md](CHANGELOG.md) for release history.
 
 Upgrading from a release that used the old agent names (Fenny, Disha, Parminder,
-David, Harpreet, Murat)? See [MIGRATION.md](MIGRATION.md).
+David, Harpreet, Murat — or the Developer's interim name Dev)? See [MIGRATION.md](MIGRATION.md).
 
 ### Current Status
 
 This project is in active early development. All six agents (John, Penny, Aria,
-Dev, Remy, and Tess) are implemented. The protocol specification is complete
+Dave, Remy, and Tess) are implemented. The protocol specification is complete
 and stable.
 
 ---

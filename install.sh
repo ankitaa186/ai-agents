@@ -37,7 +37,7 @@ AGENT_FILES=(
   "john.md"
   "penny.md"
   "aria.md"
-  "dev.md"
+  "dave.md"
   "remy.md"
   "tess.md"
 )
@@ -47,30 +47,35 @@ AGENT_META=(
   "john|Scrum Master & Orchestrator|green"
   "penny|Product Manager|blue"
   "aria|Architect|cyan"
-  "dev|Developer|yellow"
+  "dave|Developer|yellow"
   "remy|Code Reviewer|red"
   "tess|Tester|magenta"
 )
 
-# Legacy agent filenames from before the v0.3.0 rename (Fenny/Disha/Parminder/
-# David/Harpreet/Murat). Removed on install and uninstall so the old team never
-# lingers in ~/.claude/agents/ alongside the renamed files.
+# Legacy agent filenames from earlier releases: the v0.3.0 rename (Fenny/Disha/
+# Parminder/David/Harpreet/Murat) and the v0.4.0 Dev->Dave rename (dev.md). Removed
+# on install and uninstall so old files never linger in ~/.claude/agents/.
 OLD_AGENT_FILES=(
   "fenny.md"
   "disha.md"
   "parminder.md"
   "david.md"
+  "dev.md"
   "harpreet.md"
   "murat.md"
 )
 
-# Legacy per-agent memory filename -> new filename, for migrating a project's
-# .scrum/memory/ after the rename. Parallel to the agent rename above.
+# Legacy per-agent memory filename -> current filename, for migrating a project's
+# .scrum/memory/ after a rename. Covers the v0.3.0 real-name -> neutral-name rename
+# and the v0.4.0 Dev -> Dave rename (both .david.md and .dev.md map to .dave.md).
+# Each pair is applied independently — renamed only when the old file exists and the
+# new one does not — so a project from any prior version lands on the current names.
 MEMORY_RENAMES=(
   ".fenny.md:.john.md"
   ".disha.md:.penny.md"
   ".parminder.md:.aria.md"
-  ".david.md:.dev.md"
+  ".david.md:.dave.md"
+  ".dev.md:.dave.md"
   ".harpreet.md:.remy.md"
   ".murat.md:.tess.md"
 )
@@ -359,7 +364,7 @@ show_help() {
     john        Scrum Master & Orchestrator
     penny       Product Manager
     aria        Architect
-    dev         Developer
+    dave        Developer
     remy        Code Reviewer
     tess        Tester
 
@@ -367,7 +372,7 @@ show_help() {
     Source:      ./agents/*.md
     Destination: ~/.claude/agents/
 
-  ${BOLD}Migration (v0.3.0 rename):${RESET}
+  ${BOLD}Migration (v0.3.0 / v0.4.0 renames):${RESET}
     A normal install migrates the current project's .scrum/ memory to the new
     agent names. Other projects migrate the first time you invoke John there.
 

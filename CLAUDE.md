@@ -16,7 +16,7 @@ through a file-based message bus at `.scrum/bus/` under the target project.
 | John | `agents/john.md` | Scrum Master & Orchestrator |
 | Penny | `agents/penny.md` | Product Manager |
 | Aria | `agents/aria.md` | Architect |
-| Dev | `agents/dev.md` | Developer |
+| Dave | `agents/dave.md` | Developer |
 | Remy | `agents/remy.md` | Code Reviewer |
 | Tess | `agents/tess.md` | Tester |
 

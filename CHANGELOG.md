@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-06-19
+
+### Changed
+
+- **Renamed the Developer agent from Dev to Dave.** "Dev" collided with the generic word for the role
+  it plays — "put a dev on it" could mean the agent *or* any developer — so the proper noun kept
+  dissolving into the common noun. "Dave" is a plain name with no such ambiguity (and a near-rhyme of
+  the old one). The agent file moved to `agents/dave.md`, the `subagent_type` is now `dave`, and
+  per-project memory is keyed by `.scrum/memory/.dave.md`. The other five agents are unchanged.
+
+### Migration
+
+- `install.sh` now also removes a stale `dev.md` from `~/.claude/agents/` on install/uninstall, and
+  migrates `.scrum/memory/.dev.md` → `.dave.md` (alongside the original `.david.md` → `.dave.md`).
+- John auto-migrates `.dev.md` → `.dave.md` on boot, so projects on v0.3.x move over with no manual
+  steps. The `.scrum/` data format is unchanged — no history is lost. See [MIGRATION.md](MIGRATION.md).
+
 ## [0.3.0] - 2026-06-19
 
 ### Changed
